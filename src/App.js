@@ -1,4 +1,4 @@
-import { Button, Modal, makeStyles, Input } from '@material-ui/core';
+import { Button, Modal, makeStyles, Input, useRadioGroup } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Post from './Post'
@@ -33,9 +33,12 @@ function App() {
     const [posts, setPosts] = useState([]);
     const [openSignIn, setOpenSignIn] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
-    const [modalStyle, setModalStyle] = useState(getModalStyle)
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [modalStyle, setModalStyle] = useState(getModalStyle);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [authToken, setAuthToken] = useState(null);
+    const [authTokenType, setAuthTokenType] = useState(null);
+    const [userId, setUserId] = useState('');
 
 
     useEffect(() => {
@@ -68,8 +71,48 @@ function App() {
     }, [])
 
     const signIn = (event) => {
-        
+        event.preventDefault();
+
+        let formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        const requestOptions = {
+            method: 'POST',
+            body: formData
+        }
+
+        fetch(BASE_URL +'login', requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw response
+            })
+            .then(data => {
+                console.log(data);
+                setAuthToken(data.access_token);
+                setAuthTokenType(data.token_type);
+                setUserId(data.user_id);
+                setUsername(data.username);
+
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+            })
+
+        setOpenSignIn(false);
     }
+
+    const signOut = (event) => {
+        setAuthToken(null);
+        setAuthTokenType(null);
+        setUserId('');
+        setUsername('');
+
+    }
+
 
 
     return (
@@ -109,11 +152,20 @@ function App() {
                 <img className='app_headerImage'
                     src="https://cdn.ibos.kr/design/upload_file/__HTMLEDITOR__/moosa73/0sp2n4ndfl7e6ldliffnv64hv6_15125360567641.png"
                     alt="Instagram" />
+                
+                
+                {authToken ? (
+                    <Button onClick={() => signOut()}>LOGOUT</Button>
+                ) : (
+                    <div>
+                        <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
+                        <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
+                    </div>
 
-                <div>
-                    <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
-                    <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
-                </div>
+                )}
+            
+            
+                
 
             </div>
             <div className='app_posts'>
