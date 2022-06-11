@@ -40,6 +40,33 @@ function App() {
     const [authTokenType, setAuthTokenType] = useState(null);
     const [userId, setUserId] = useState('');
 
+    useEffect(() => {
+        // alert("1");
+        setAuthToken(window.localStorage.getItem('authToken'));
+        setAuthTokenType(window.localStorage.getItem('authTokenType'));
+        setUsername(window.localStorage.getItem('username'));
+        setUserId(window.localStorage.getItem('userId')); 
+        // alert("1 authToken:"+window.localStorage.getItem('authToken') +"\n tokenType:"+window.localStorage.getItem('authTokenType') 
+        // +"\n username:"+window.localStorage.getItem('username')+"\n userId:"+window.localStorage.getItem('userId'));
+    }, [])
+
+    useEffect(() => {
+        // alert('authToken:'+authToken+"\n authTokenType:"+authTokenType+"\n username:"+username+"\n id:"+userId);
+        authToken
+            ? window.localStorage.setItem('authToken', authToken)
+            : window.localStorage.removeItem('authToken')
+        authTokenType
+            ? window.localStorage.setItem('authTokenType', authTokenType)
+            : window.localStorage.removeItem('authTokenType')
+        username
+            ? window.localStorage.setItem('username', username)
+            : window.localStorage.removeItem('username')
+        userId
+            ? window.localStorage.setItem('userId', userId)
+            : window.localStorage.removeItem('userId')
+            
+    }, [authToken, authTokenType, userId])
+  
 
     useEffect(() => {
         fetch(BASE_URL + 'post/all')
@@ -95,7 +122,6 @@ function App() {
                 setAuthTokenType(data.token_type);
                 setUserId(data.user_id);
                 setUsername(data.username);
-
             })
             .catch(error => {
                 console.log(error);
