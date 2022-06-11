@@ -34,3 +34,15 @@
 
 
 
+
+
+### 3. material 
+
+-   Avatar, Button 패키지를 위해 `material` 패키지 설치 필요
+
+-   `npm install @material-ui/core --force` 명령어 입력하여 패키지 설치. `--force` 사용하는 이유는 버전 문제로 인해 react 18 버전에서는 해당 패키지가 지원이 안됨(22.06.11 기준)
+
+
+
+
+
