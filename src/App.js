@@ -1,3 +1,4 @@
+import { Button } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Post from './Post'
@@ -7,6 +8,8 @@ const BASE_URL = 'http://localhost:8000/'
 function App() {
 
     const [posts, setPosts] = useState([]);
+    const [openSignIn, setOpenSignIn] = useState(false);
+    const [openSignUp, setOpenSignUp] = useState(false);
 
     useEffect(() => {
         fetch(BASE_URL + 'post/all')
@@ -40,14 +43,27 @@ function App() {
 
 
     return (
-        <div className='app_posts'>
-            {
-                posts.map(post => (
-                    <Post
-                        post = {post}
-                    />
-                ))
-            }
+        <div className="app">
+            <div className='app_header'>
+                <img className='app_headerImage'
+                    src="https://cdn.ibos.kr/design/upload_file/__HTMLEDITOR__/moosa73/0sp2n4ndfl7e6ldliffnv64hv6_15125360567641.png"
+                    alt="Instagram" />
+
+                <div>
+                    <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
+                    <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
+                </div>
+
+            </div>
+            <div className='app_posts'>
+                {
+                    posts.map(post => (
+                        <Post
+                            post = {post}
+                        />
+                    ))
+                }
+            </div>
         </div>
     );
 }
