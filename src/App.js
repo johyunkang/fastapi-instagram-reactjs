@@ -1,7 +1,8 @@
-import { Button, Modal, makeStyles, Input, useRadioGroup } from '@material-ui/core';
+import { Button, Modal, makeStyles, Input } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Post from './Post'
+import Post from './Post';
+import ImageUpload from './ImageUpload';
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -118,7 +119,7 @@ function App() {
                 throw response
             })
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 setAuthToken(data.access_token);
                 setAuthTokenType(data.token_type);
                 setUserId(data.user_id);
@@ -250,19 +251,17 @@ function App() {
                 
                 
                 {authToken ? (
-                    <Button onClick={() => signOut()}>LOGOUT</Button>
-                ) : (
-                    <div>
-                        <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
-                        <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
-                    </div>
-
-                )}
-            
-            
-                
-
+                        <Button onClick={() => signOut()}>LOGOUT</Button>
+                    ) : (
+                        <div>
+                            <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
+                            <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
+                        </div>
+                    )
+                }
             </div>
+
+
             <div className='app_posts'>
                 {
                     posts.map(post => (
@@ -272,6 +271,18 @@ function App() {
                     ))
                 }
             </div>
+
+
+            {
+                authToken ? (
+                    <ImageUpload 
+                        authToken = {authToken}
+                        authTokenType = {authTokenType}
+                    />
+                ) : (
+                    <h3>You need to login to upload</h3>
+                )
+            }
         </div>
     );
 }
