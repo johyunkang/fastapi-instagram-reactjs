@@ -4,7 +4,7 @@ import './ImageUpload.css'
 
 const BASE_URL = 'http://localhost:8000/'
 
-function ImageUpload(authToken, authTokenType, userId) {
+function ImageUpload({authToken, authTokenType, userId}) {
     const [caption, setCaption] = useState('');
     const [image, setImage] = useState(null);
 
@@ -30,7 +30,8 @@ function ImageUpload(authToken, authTokenType, userId) {
 
         fetch(BASE_URL + 'post/image', requestOptions)
             .then(response => {
-                // console.log(response)
+                console.log("post/image fetch!!")
+                console.log(response)
                 if (response.ok) {
                     return response.json()
                 }
@@ -72,7 +73,8 @@ function ImageUpload(authToken, authTokenType, userId) {
 
         fetch(BASE_URL + 'post', requestOptions)
             .then(response => {
-                if(response.ok) {
+                console.log("post fetch!!")
+                if (response.ok) {
                     return response.json()
                 }
                 throw response
@@ -99,10 +101,11 @@ function ImageUpload(authToken, authTokenType, userId) {
                 id="fileInput"
                 onChange={handleChange}
             />
-            <Button className="imageUpload_button" onClick={handleUpload} >Upload</Button>
+            <Button className="imageUpload_button" onClick={handleUpload} >
+                Upload
+            </Button>
         </div>
     )
 }
 
-
-export default ImageUpload
+export default ImageUpload;

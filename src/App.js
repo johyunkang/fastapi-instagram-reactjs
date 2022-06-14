@@ -1,5 +1,5 @@
 import { Button, Modal, makeStyles, Input } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Post from './Post';
 import ImageUpload from './ImageUpload';
@@ -34,42 +34,38 @@ function App() {
     const [posts, setPosts] = useState([]);
     const [openSignIn, setOpenSignIn] = useState(false);
     const [openSignUp, setOpenSignUp] = useState(false);
-    const [modalStyle, setModalStyle] = useState(getModalStyle);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [authToken, setAuthToken] = useState(null);
+    const [modalStyle, setModalStyle] = useState(getModalStyle)
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [authToken, setAuthToken] = useState(null)
     const [authTokenType, setAuthTokenType] = useState(null);
     const [userId, setUserId] = useState('');
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('')
 
     useEffect(() => {
-        // alert("1");
-        setAuthToken(window.localStorage.getItem('authToken'));
-        setAuthTokenType(window.localStorage.getItem('authTokenType'));
-        setUsername(window.localStorage.getItem('username'));
-        setUserId(window.localStorage.getItem('userId')); 
-        // alert("1 authToken:"+window.localStorage.getItem('authToken') +"\n tokenType:"+window.localStorage.getItem('authTokenType') 
-        // +"\n username:"+window.localStorage.getItem('username')+"\n userId:"+window.localStorage.getItem('userId'));
+        //setAuthToken(window.localStorage.getItem('authToken'));
+        setAuthToken(window.sessionStorage.getItem('authToken'));
+        setAuthTokenType(window.localStorage.getItem('authTokenType'))
+        setUsername(window.localStorage.getItem('username'))
+        setUserId(window.localStorage.getItem('userId'))
     }, [])
 
     useEffect(() => {
-        // alert('authToken:'+authToken+"\n authTokenType:"+authTokenType+"\n username:"+username+"\n id:"+userId);
         authToken
-            ? window.localStorage.setItem('authToken', authToken)
-            : window.localStorage.removeItem('authToken')
+            ? window.sessionStorage.setItem('authToken', authToken) //window.localStorage.setItem('authToken', authToken)
+            : window.sessionStorage.getItem('authToken') //window.sessionStorage.removeItem('authToken') //window.localStorage.removeItem('authToken')
         authTokenType
             ? window.localStorage.setItem('authTokenType', authTokenType)
-            : window.localStorage.removeItem('authTokenType')
+            : window.sessionStorage.getItem('authToken') //window.localStorage.removeItem('authTokenType')
         username
             ? window.localStorage.setItem('username', username)
-            : window.localStorage.removeItem('username')
+            : window.sessionStorage.getItem('authToken') //window.localStorage.removeItem('username')
         userId
             ? window.localStorage.setItem('userId', userId)
-            : window.localStorage.removeItem('userId')
-            
+            : window.sessionStorage.getItem('authToken') //window.localStorage.removeItem('userId')
+
     }, [authToken, authTokenType, userId])
   
-
     useEffect(() => {
         fetch(BASE_URL + 'post/all')
             .then(response => {
@@ -111,7 +107,7 @@ function App() {
             body: formData
         }
 
-        fetch(BASE_URL +'login', requestOptions)
+        fetch(BASE_URL + 'login', requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -119,26 +115,25 @@ function App() {
                 throw response
             })
             .then(data => {
-                // console.log(data);
-                setAuthToken(data.access_token);
-                setAuthTokenType(data.token_type);
-                setUserId(data.user_id);
-                setUsername(data.username);
+                console.log(data);
+                setAuthToken(data.access_token)
+                setAuthTokenType(data.token_type)
+                setUserId(data.user_id)
+                setUsername(data.username)
             })
             .catch(error => {
                 console.log(error);
-                alert(error);
+                alert(error)
             })
 
         setOpenSignIn(false);
     }
 
     const signOut = (event) => {
-        setAuthToken(null);
-        setAuthTokenType(null);
-        setUserId('');
-        setUsername('');
-
+        setAuthToken(null)
+        setAuthTokenType(null)
+        setUserId('')
+        setUsername('')
     }
 
     const signUp = (event) => {
@@ -152,11 +147,12 @@ function App() {
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: json_string
         }
 
-        fetch(BASE_URL + 'user/', requestOptions)
+        //fetch(BASE_URL + 'user/', requestOptions)
+        fetch(BASE_URL + 'user', requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -176,7 +172,6 @@ function App() {
     }
 
 
-
     return (
         <div className="app">
 
@@ -187,9 +182,9 @@ function App() {
                 <div style={modalStyle} className={classes.paper}>
                     <form className="app_signin">
                         <center>
-                            <img className='app_headerImage'
+                            <img className="app_headerImage"
                                     src="https://cdn.ibos.kr/design/upload_file/__HTMLEDITOR__/moosa73/0sp2n4ndfl7e6ldliffnv64hv6_15125360567641.png"
-                                    alt="Instagram" />
+                                    alt="Instagram"/>
                         </center>
                         <Input
                             placeholder="username"
@@ -205,7 +200,6 @@ function App() {
                             type="submit"
                             onClick={signIn}>Login</Button>
                     </form>
-
                 </div>
 
             </Modal>
@@ -217,9 +211,9 @@ function App() {
                 <div style={modalStyle} className={classes.paper}>
                     <form className="app_signin">
                         <center>
-                            <img className='app_headerImage'
+                            <img className="app_headerImage"
                                     src="https://cdn.ibos.kr/design/upload_file/__HTMLEDITOR__/moosa73/0sp2n4ndfl7e6ldliffnv64hv6_15125360567641.png"
-                                    alt="Instagram" />
+                                    alt="Instagram"/>
                         </center>
                         <Input
                             placeholder="username"
@@ -244,28 +238,27 @@ function App() {
 
             </Modal>
 
-            <div className='app_header'>
-                <img className='app_headerImage'
+            <div className="app_header">
+                <img className="app_headerImage"
                     src="https://cdn.ibos.kr/design/upload_file/__HTMLEDITOR__/moosa73/0sp2n4ndfl7e6ldliffnv64hv6_15125360567641.png"
-                    alt="Instagram" />
-                
+                    alt="Instagram"/>
                 
                 {authToken ? (
-                        <Button onClick={() => signOut()}>LOGOUT</Button>
+                        <Button onClick={() => signOut()}>Logout</Button>
                     ) : (
                         <div>
-                            <Button onClick={() => setOpenSignIn(true)}>LOGIN</Button>
-                            <Button onClick={() => setOpenSignUp(true)}>SIGNUP</Button>
+                            <Button onClick={() => setOpenSignIn(true)}>Login</Button>
+                            <Button onClick={() => setOpenSignUp(true)}>Signup</Button>
                         </div>
                     )
                 }
             </div>
 
 
-            <div className='app_posts'>
+            <div className="app_posts">
                 {
                     posts.map(post => (
-                        <Post 
+                        <Post key={post.id}
                             post = {post}
                             authToken = {authToken}
                             authTokenType = {authTokenType}
@@ -274,7 +267,6 @@ function App() {
                     ))
                 }
             </div>
-
 
             {
                 authToken ? (

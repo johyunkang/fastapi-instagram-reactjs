@@ -115,12 +115,12 @@ function Post({ post, authToken, authTokenType, username }) {
                 src={imageUrl}
             />
 
-            <h4 className='post_text'>{post.caption}</h4>
+            <h4 className='post_text' >{post.caption}</h4>
 
             <div className='post_comments'>
                 {
                     comments.map((comment) => (
-                        <p>
+                        <p key={comment.id}>
                             <strong>{comment.username}:</strong> {comment.text}
                         </p>
                     ))
