@@ -4,10 +4,11 @@ import {Avatar, Button} from "@material-ui/core";
 
 const BASE_URL = 'http://localhost:8000/'
 
-function Post({ post, authToken, authTokenType}) {
+function Post({ post, authToken, authTokenType, username}) {
 
     const [imageUrl, setImageUrl] = useState('')
     const [comments, setComments] = useState([])
+    const [newComment, setNewComment] = useState('')
 
     useEffect(() => {
         if (post.image_url_type === 'absolute'){
@@ -44,6 +45,59 @@ function Post({ post, authToken, authTokenType}) {
             })
     }
 
+
+    const postComment = (event) => {
+        event?.preventDefault()
+
+        const json_string = JSON.stringify({
+            'username': username,
+            'text': newComment,
+            'post_id': post.id
+        })
+
+        const requestOptions = {
+            mehtod: 'POST',
+            headers: new Headers({
+                'Authorization': authTokenType + ' ' + authToken,
+                'Content-Type': 'applicaton/json'
+            }),
+            body: json_string
+        }
+
+        fetch(BASE_URL + 'comment', requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+            })
+            .then(data => {
+                fetchComments()
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                setNewComment('')
+            })
+    }
+
+    const fetchComments = () => {
+        fetch(BASE_URL + 'comment/all/' + post.id)
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                throw response
+            })
+            .then(data => {
+                setComments(data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+
     return (
         <div className="post">
             <div className="post_header">
@@ -72,6 +126,24 @@ function Post({ post, authToken, authTokenType}) {
                     ))
                 }
             </div>
+
+            {authToken && (
+                <form className="post_commentbox">
+                    <input className="post_input"
+                        type="text"
+                        placeholder="Add a comment"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button
+                        className="post_button"
+                        type="submit"
+                        disabled={!newComment}
+                        onClick={postComment}>
+                            Post
+                        </button>
+                </form>
+            )}
         </div>
     )
 }
