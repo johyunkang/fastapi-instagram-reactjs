@@ -1,21 +1,20 @@
 import React, {useState, useEffect} from "react";
 import './Post.css'
-import {Avatar, Button} from "@material-ui/core";
+import { Avatar, Button } from "@material-ui/core";
 
 const BASE_URL = 'http://localhost:8000/'
 
-function Post({ post, authToken, authTokenType, username}) {
+function Post({ post, authToken, authTokenType, username }) {
 
     const [imageUrl, setImageUrl] = useState('')
     const [comments, setComments] = useState([])
     const [newComment, setNewComment] = useState('')
 
     useEffect(() => {
-        if (post.image_url_type === 'absolute'){
+        if (post.image_url_type == 'absolute') {
             setImageUrl(post.image_url)
         } else {
             setImageUrl(BASE_URL + post.image_url)
-
         }
     }, [])
 
@@ -28,7 +27,7 @@ function Post({ post, authToken, authTokenType, username}) {
 
         const requestOptions = {
             method: 'GET',
-            Headers: new Headers({
+            headers: new Headers({
                 'Authorization': authTokenType + ' ' + authToken
             })
         }
@@ -56,10 +55,10 @@ function Post({ post, authToken, authTokenType, username}) {
         })
 
         const requestOptions = {
-            mehtod: 'POST',
+            method: 'POST',
             headers: new Headers({
                 'Authorization': authTokenType + ' ' + authToken,
-                'Content-Type': 'applicaton/json'
+                'Content-Type': 'application/json'
             }),
             body: json_string
         }
@@ -97,7 +96,6 @@ function Post({ post, authToken, authTokenType, username}) {
             })
     }
 
-
     return (
         <div className="post">
             <div className="post_header">
@@ -106,7 +104,9 @@ function Post({ post, authToken, authTokenType, username}) {
                     src=""/>
                 <div className="post_headerInfo">
                     <h3>{post.user.username}</h3>
-                    <Button className="post_delete" onClick={handleDelete} >Delete</Button>
+                    <Button className="post_delete" onClick={handleDelete}>
+                        Delete
+                    </Button>
                 </div>
             </div>
 
@@ -115,9 +115,9 @@ function Post({ post, authToken, authTokenType, username}) {
                 src={imageUrl}
             />
 
-            <h4 className="post_text">{post.caption}</h4>
+            <h4 className='post_text'>{post.caption}</h4>
 
-            <div className="post_comments">
+            <div className='post_comments'>
                 {
                     comments.map((comment) => (
                         <p>
