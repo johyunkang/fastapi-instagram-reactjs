@@ -43,7 +43,7 @@ function App() {
     const [email, setEmail] = useState('')
 
     useEffect(() => {
-        //setAuthToken(window.localStorage.getItem('authToken'));
+        //setAuthToken(window.localStorage.getItem('authToken')); 
         setAuthToken(window.sessionStorage.getItem('authToken'));
         setAuthTokenType(window.localStorage.getItem('authTokenType'))
         setUsername(window.localStorage.getItem('username'))
@@ -52,7 +52,7 @@ function App() {
 
     useEffect(() => {
         authToken
-            ? window.sessionStorage.setItem('authToken', authToken) //window.localStorage.setItem('authToken', authToken)
+            ? window.localStorage.setItem('authToken', authToken)
             : window.sessionStorage.getItem('authToken') //window.sessionStorage.removeItem('authToken') //window.localStorage.removeItem('authToken')
         authTokenType
             ? window.localStorage.setItem('authTokenType', authTokenType)
